@@ -1,0 +1,28 @@
+# roles/example/tasks/main.yml
+- name: Setup Docker Repository
+  apt:
+    pkg:
+    - apt-transport-https
+    - ca-certificates
+    - curl
+    - gnupg-agent
+    - software-properties-common
+    update_cache: yes
+
+- name: Add Docker’s official GPG key
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+
+- name: Add Docker Stable Repository
+  apt_repository:
+    repo: "deb [arch={{ arch }}] https://download.docker.com/linux/ubuntu focal stable"
+    state: present
+
+- name: Install Docker CE
+  apt:
+    pkg:
+    - docker-ce
+    - docker-ce-cli
+    - containerd.io
+    update_cache: yes

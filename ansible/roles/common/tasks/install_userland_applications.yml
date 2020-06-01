@@ -1,0 +1,22 @@
+## Run as root user
+
+git clone https://github.com/raspberrypi/userland.git
+
+apt-get install -y build-essential
+
+
+sed -i 's/__bitwise/FDT_BITWISE/'  /root/userland/opensrc/helpers/libfdt/libfdt_env.h
+sed -i 's/__force/FDT_FORCE/'  /root/userland/opensrc/helpers/libfdt/libfdt_env.h
+
+
+cd /root/userland
+mkdir build && cd build
+cmake -DCMAKE_BUILD_TYPE=Release -DARM64=ON ../
+make -j4 && make install
+
+cp -rfp /opt/vc/* /usr
+
+
+# Add to end-of-file
+vim /etc/ld.so.conf
+insert /opt/vc/lib
